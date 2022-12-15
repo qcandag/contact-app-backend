@@ -38,5 +38,5 @@ export default class User extends BaseModel {
     localKey: 'id',
     foreignKey: 'user_id',
   })
-  public posts: HasMany<typeof Contact>
+  public contact: HasMany<typeof Contact>
 }

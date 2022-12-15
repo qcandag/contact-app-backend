@@ -7,7 +7,7 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get('all', 'ContactsController.all')
-  //Route.get('find/:id?', 'ContactsController.find')
+  Route.get('search/:id?', 'ContactsController.search')
 })
   .prefix('contact')
   .middleware('auth')

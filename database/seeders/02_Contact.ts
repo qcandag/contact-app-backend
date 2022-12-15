@@ -14,6 +14,11 @@ export default class extends BaseSeeder {
         name: 'Can',
         phone_number: 905413035615,
       },
+      {
+        user_id: 2,
+        name: 'Uğur',
+        phone_number: 905413035615,
+      },
     ])
   }
 }

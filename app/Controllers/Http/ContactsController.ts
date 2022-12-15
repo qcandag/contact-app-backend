@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 // import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 import Contact from 'App/Models/Contact'
@@ -11,7 +12,31 @@ export default class ContactsController {
   public async search({ auth, request }) {
     const { name: searchName } = request.qs()
     const user = await User.findOrFail(auth.user.id)
-    const x = await user.related('contact').query().where('name', searchName)
-    return x
+    const contact = await user.related('contact').query().where('name', searchName).firstOrFail()
+    return contact
+  }
+  // create find function to find user by id 'DRY'
+  public async add({ auth, request }) {
+    const user = await User.findOrFail(auth.user.id)
+    const { name, phone_number } = request.body()
+
+    const contact = await user.related('contact').create({
+      name: name,
+      phone_number: phone_number,
+    })
+    // add validation
+    return contact
+  }
+
+  public async edit({ auth, request }) {
+    const user = await User.findOrFail(auth.user.id)
+    const { name, phone_number, contact_id } = request.body()
+    const updatedContact = await user
+      .related('contact')
+      .query()
+      .where('id', contact_id)
+      .update({ name: name, phone_number: phone_number })
+    // add validation
+    return updatedContact
   }
 }

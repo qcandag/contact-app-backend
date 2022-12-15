@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeUpdate, column } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Contact extends BaseModel {
   @column({ isPrimary: true })
@@ -19,4 +19,9 @@ export default class Contact extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeUpdate()
+  public static async checkGivenFields({ request }) {
+    console.log(request)
+  }
 }

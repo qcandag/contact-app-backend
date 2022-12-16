@@ -9,7 +9,11 @@ export default class LoginController {
     const token = await auth.attempt(email, password, {
       expiresIn: '7days',
     })
-    return token
+    const userName = token.user.name
+    return {
+      token: token,
+      name: userName,
+    }
   }
 
   public async register({ request, response }) {

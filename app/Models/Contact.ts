@@ -19,9 +19,4 @@ export default class Contact extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
-
-  @beforeUpdate()
-  public static async checkGivenFields({ request }) {
-    console.log(request)
-  }
 }

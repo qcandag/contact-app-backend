@@ -11,7 +11,7 @@ export default class LoginController {
     })
     const userName = token.user.name
     return {
-      token: token,
+      token: token.token,
       name: userName,
     }
   }
@@ -26,6 +26,21 @@ export default class LoginController {
         message: 'Registration is failed by error',
         error: `${error.message}`,
       })
+    }
+  }
+
+  public async getMe({ auth, response }) {
+    const defaultReturnObject = { authenticated: false, user: null }
+    try {
+      const user = await User.findOrFail(auth.user.id)
+      if (!user) {
+        response.status(400).json(defaultReturnObject)
+        return
+      }
+      response.status(200).json({ authenticated: true, user: user })
+    } catch (err) {
+      console.log('POST auth/me, Something Went Wrong', err)
+      response.status(400).json(defaultReturnObject)
     }
   }
 }

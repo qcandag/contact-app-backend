@@ -13,13 +13,14 @@ export default class ContactsController {
   public async search({ auth, request }) {
     const { name: searchName } = request.qs()
     const user = await User.findOrFail(auth.user.id)
+    // benzer match LIKE, full context search
     const contact = await user.related('contact').query().where('name', searchName).firstOrFail()
     return contact
   }
 
-  // create find function to find user by id 'DRY'
   public async add({ auth, request }) {
     await request.validate(AddContactValidator)
+
     const user = await User.findOrFail(auth.user.id)
     const { name, phone_number } = request.body()
 
@@ -43,7 +44,11 @@ export default class ContactsController {
       .update({ name: name || user.name, phone_number: phone_number || contact.phone_number }, [
         'name',
         'phone_number',
+        'id',
       ])
     return updatedContact
   }
 }
+
+// domain driven arch
+// repository pattern.
